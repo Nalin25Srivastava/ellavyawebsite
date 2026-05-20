@@ -94,11 +94,15 @@ app.get('/api/products/:id', async (req, res) => {
 
 /**
  * Server Initialization
- * Starts the Express server on the configured port.
+ * Starts the Express server on the configured port locally.
+ * In production (Vercel), the app is exported as a serverless function.
  */
-const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+export default app;
 
