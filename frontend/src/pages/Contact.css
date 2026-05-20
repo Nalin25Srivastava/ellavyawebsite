@@ -1,0 +1,152 @@
+.contact-container {
+  padding-top: 80px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  padding: 1.5rem 3rem;
+  gap: 3rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-heading {
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.contact-subheading {
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.info-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.info-icon {
+  color: #aa3bff;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.info-item h3 {
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin-bottom: 0.4rem;
+}
+
+.info-item p {
+  color: #666;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input, 
+.form-group textarea {
+  padding: 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fcfcfc;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #aa3bff;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(170, 59, 255, 0.1);
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #aa3bff 0%, #8b1cf0 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(170, 59, 255, 0.3);
+}
+
+.send-icon {
+  transition: transform 0.3s ease;
+}
+
+.submit-button:hover .send-icon {
+  transform: translateX(4px) translateY(-4px);
+}
+
+@media screen and (max-width: 960px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+    gap: 3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-heading {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,137 @@
+/* Sidebar */
+.products-sidebar {
+  background: white;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.products-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-header h2 {
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.filter-icon {
+  color: #aa3bff;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.category-item:hover {
+  background: #fdf8ff;
+  border-color: #f3e5ff;
+}
+
+.category-item.active {
+  background: #f3e5ff;
+  border-color: #aa3bff;
+}
+
+.all-btn {
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+}
+
+.all-btn.active {
+  border-bottom-color: #aa3bff;
+}
+
+.cat-icon {
+  font-size: 1.2rem;
+}
+
+.cat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cat-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.cat-desc {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.1rem;
+}
+
+.clear-filter-btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: white;
+  color: #666;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-filter-btn:hover {
+  background: #fff;
+  border-color: #ff4d4d;
+  color: #ff4d4d;
+}
+
+@media screen and (max-width: 960px) {
+  .products-sidebar {
+    position: relative;
+    top: 0;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+  
+  .category-list {
+    flex-direction: row;
+    height: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .category-item {
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+}
