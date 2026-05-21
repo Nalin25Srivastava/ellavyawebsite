@@ -15,7 +15,7 @@ const generateToken = (id) => {
 // @desc    Register a new user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
@@ -28,6 +28,7 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password,
+      role: role || 'customer',
     });
 
     if (user) {
@@ -35,6 +36,7 @@ router.post('/register', async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {
@@ -49,16 +51,22 @@ router.post('/register', async (req, res) => {
 // @desc    Auth user & get token
 // @access  Public
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   try {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // Verify requested role matches actual role if a role was provided
+      if (role && user.role !== role) {
+         return res.status(401).json({ message: `Access denied. Not registered as an ${role}.` });
+      }
+
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {

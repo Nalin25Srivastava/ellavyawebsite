@@ -5,6 +5,7 @@ import './Auth.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('customer');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await res.json();
@@ -46,6 +47,23 @@ const Login = () => {
         <p className="auth-subtitle">Log in to access your Ellavya account</p>
 
         {error && <div className="error-message">{error}</div>}
+
+        <div className="role-toggle">
+          <button 
+            type="button" 
+            className={`role-btn ${role === 'customer' ? 'active' : ''}`}
+            onClick={() => setRole('customer')}
+          >
+            Customer
+          </button>
+          <button 
+            type="button" 
+            className={`role-btn ${role === 'admin' ? 'active' : ''}`}
+            onClick={() => setRole('admin')}
+          >
+            Admin
+          </button>
+        </div>
 
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="form-group">

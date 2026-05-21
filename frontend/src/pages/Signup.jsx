@@ -7,6 +7,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('customer');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
 
       const data = await res.json();
@@ -54,6 +55,23 @@ const Signup = () => {
         <p className="auth-subtitle">Join Ellavya today</p>
 
         {error && <div className="error-message">{error}</div>}
+
+        <div className="role-toggle">
+          <button 
+            type="button" 
+            className={`role-btn ${role === 'customer' ? 'active' : ''}`}
+            onClick={() => setRole('customer')}
+          >
+            Customer
+          </button>
+          <button 
+            type="button" 
+            className={`role-btn ${role === 'admin' ? 'active' : ''}`}
+            onClick={() => setRole('admin')}
+          >
+            Admin
+          </button>
+        </div>
 
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="form-group">
