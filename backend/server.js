@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import Product from './models/Product.js';
 import Category from './models/Category.js';
 import Combo from './models/Combo.js';
+import authRoutes from './routes/authRoutes.js';
 
 /**
  * Load Environment Variables
@@ -74,6 +75,13 @@ app.get('/api/combos', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+/**
+ * Authentication Routes
+ * POST /api/auth/register: Registers a new user
+ * POST /api/auth/login: Authenticates a user
+ */
+app.use('/api/auth', authRoutes);
 
 /**
  * Single Product Route

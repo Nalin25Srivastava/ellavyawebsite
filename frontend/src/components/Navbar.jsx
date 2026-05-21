@@ -62,16 +62,16 @@ const Navbar = () => {
           {/* Mobile-Only Authentication Buttons (rendered inside the menu on mobile) */}
           <li className="nav-item-mobileOnly">
             <div className="navbar-auth-mobile">
-              <button className="btn-login" onClick={closeMobileMenu}>Log In</button>
-              <button className="btn-signup" onClick={closeMobileMenu}>Sign Up</button>
+              <Link to="/login" className="btn-login" onClick={closeMobileMenu}>Log In</Link>
+              <Link to="/signup" className="btn-signup" onClick={closeMobileMenu}>Sign Up</Link>
             </div>
           </li>
         </ul>
 
         {/* Desktop-Only Authentication Buttons */}
         <div className="navbar-auth">
-          <button className="btn-login">Log In</button>
-          <button className="btn-signup">Sign Up</button>
+          <Link to="/login" className="btn-login">Log In</Link>
+          <Link to="/signup" className="btn-signup">Sign Up</Link>
         </div>
       </div>
     </nav>

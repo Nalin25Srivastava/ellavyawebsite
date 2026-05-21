@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Products from './pages/Products';
 import About from './pages/About';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 
 /* Global Styles */
@@ -38,6 +40,10 @@ function App() {
         {/* Temporary placeholders for Cart and About - redirecting to Home for now */}
         <Route path="/cart" element={<Home />} />
         <Route path="/about" element={<About />} />
+
+        {/* Auth Pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
       </Routes>
     </Router>
