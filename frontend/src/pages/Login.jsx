@@ -49,24 +49,38 @@ const Login = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="role-toggle">
-          <button 
-            type="button" 
-            className={`role-btn ${role === 'customer' ? 'active' : ''}`}
-            onClick={() => setRole('customer')}
-          >
-            Customer
-          </button>
-          <button 
-            type="button" 
-            className={`role-btn ${role === 'admin' ? 'active' : ''}`}
-            onClick={() => setRole('admin')}
-          >
-            Admin
-          </button>
-        </div>
-
         <form className="auth-form" onSubmit={submitHandler}>
+          <div className="role-toggle">
+            <button 
+              type="button" 
+              className={`role-btn ${role === 'customer' ? 'active' : ''}`}
+              onClick={() => setRole('customer')}
+            >
+              Customer
+            </button>
+            <button 
+              type="button" 
+              className={`role-btn ${role === 'admin' ? 'active' : ''}`}
+              onClick={() => setRole('admin')}
+            >
+              Admin
+            </button>
+          </div>
+
+          {role === 'admin' && (
+            <div className="form-group">
+              <label htmlFor="adminToken">Admin Token</label>
+              <input
+                type="password"
+                id="adminToken"
+                placeholder="Enter secret admin token"
+                value={adminToken}
+                onChange={(e) => setAdminToken(e.target.value)}
+                required
+              />
+            </div>
+          )}
+
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <input
@@ -90,20 +104,6 @@ const Login = () => {
               required
             />
           </div>
-
-          {role === 'admin' && (
-            <div className="form-group">
-              <label htmlFor="adminToken">Admin Token</label>
-              <input
-                type="password"
-                id="adminToken"
-                placeholder="Enter secret admin token"
-                value={adminToken}
-                onChange={(e) => setAdminToken(e.target.value)}
-                required
-              />
-            </div>
-          )}
 
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? 'Logging In...' : 'Log In'}
