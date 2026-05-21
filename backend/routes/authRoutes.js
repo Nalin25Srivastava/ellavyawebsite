@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import Customer from '../models/Customer.js';
+import Admin from '../models/Admin.js';
 
 const router = express.Router();
 
@@ -17,23 +18,27 @@ const generateToken = (id) => {
 router.post('/register', async (req, res) => {
   const { name, email, password, role, adminToken } = req.body;
 
-  // Verify Admin Token if registering as admin
-  if (role === 'admin' && adminToken !== 'neershalin') {
-    return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
-  }
-
   try {
-    const userExists = await User.findOne({ email });
+    let Model;
+    if (role === 'admin') {
+      if (adminToken !== 'neershalin') {
+        return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
+      }
+      Model = Admin;
+    } else {
+      Model = Customer;
+    }
+
+    const userExists = await Model.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = await User.create({
+    const user = await Model.create({
       name,
       email,
       password,
-      role: role || 'customer',
     });
 
     if (user) {
@@ -41,7 +46,7 @@ router.post('/register', async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: role || 'customer',
         token: generateToken(user._id),
       });
     } else {
@@ -58,25 +63,25 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password, role, adminToken } = req.body;
 
-  // Verify Admin Token if logging in as admin
-  if (role === 'admin' && adminToken !== 'neershalin') {
-    return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
-  }
-
   try {
-    const user = await User.findOne({ email });
+    let Model;
+    if (role === 'admin') {
+      if (adminToken !== 'neershalin') {
+        return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
+      }
+      Model = Admin;
+    } else {
+      Model = Customer;
+    }
+
+    const user = await Model.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // Verify requested role matches actual role if a role was provided
-      if (role && user.role !== role) {
-         return res.status(401).json({ message: `Access denied. Not registered as an ${role}.` });
-      }
-
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: role || 'customer',
         token: generateToken(user._id),
       });
     } else {
