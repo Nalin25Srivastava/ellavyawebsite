@@ -8,6 +8,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('customer');
+  const [adminToken, setAdminToken] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password, role, adminToken }),
       });
 
       const data = await res.json();
@@ -121,6 +122,20 @@ const Signup = () => {
               required
             />
           </div>
+
+          {role === 'admin' && (
+            <div className="form-group">
+              <label htmlFor="adminToken">Admin Token</label>
+              <input
+                type="password"
+                id="adminToken"
+                placeholder="Enter secret admin token"
+                value={adminToken}
+                onChange={(e) => setAdminToken(e.target.value)}
+                required
+              />
+            </div>
+          )}
 
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? 'Creating Account...' : 'Sign Up'}

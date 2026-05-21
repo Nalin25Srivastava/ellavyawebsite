@@ -15,7 +15,12 @@ const generateToken = (id) => {
 // @desc    Register a new user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, adminToken } = req.body;
+
+  // Verify Admin Token if registering as admin
+  if (role === 'admin' && adminToken !== 'neershalin') {
+    return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
+  }
 
   try {
     const userExists = await User.findOne({ email });
@@ -51,7 +56,12 @@ router.post('/register', async (req, res) => {
 // @desc    Auth user & get token
 // @access  Public
 router.post('/login', async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password, role, adminToken } = req.body;
+
+  // Verify Admin Token if logging in as admin
+  if (role === 'admin' && adminToken !== 'neershalin') {
+    return res.status(401).json({ message: 'Invalid Admin Token. Access denied.' });
+  }
 
   try {
     const user = await User.findOne({ email });
