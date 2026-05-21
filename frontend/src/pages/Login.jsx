@@ -41,6 +41,23 @@ const Login = () => {
     }
   };
 
+  const handleRoleChange = (selectedRole) => {
+    if (selectedRole === 'admin') {
+      const token = window.prompt("Please enter the Admin Token to proceed:");
+      if (token === 'neershalin') {
+        setAdminToken(token);
+        setRole('admin');
+      } else {
+        window.alert("Invalid Admin Token! Returning to Customer mode.");
+        setRole('customer');
+        setAdminToken('');
+      }
+    } else {
+      setRole('customer');
+      setAdminToken('');
+    }
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -54,14 +71,14 @@ const Login = () => {
             <button 
               type="button" 
               className={`role-btn ${role === 'customer' ? 'active' : ''}`}
-              onClick={() => setRole('customer')}
+              onClick={() => handleRoleChange('customer')}
             >
               Customer
             </button>
             <button 
               type="button" 
               className={`role-btn ${role === 'admin' ? 'active' : ''}`}
-              onClick={() => setRole('admin')}
+              onClick={() => handleRoleChange('admin')}
             >
               Admin
             </button>
@@ -69,14 +86,13 @@ const Login = () => {
 
           {role === 'admin' && (
             <div className="form-group">
-              <label htmlFor="adminToken">Admin Token</label>
+              <label htmlFor="adminToken">Admin Token (Verified)</label>
               <input
                 type="password"
                 id="adminToken"
-                placeholder="Enter secret admin token"
                 value={adminToken}
-                onChange={(e) => setAdminToken(e.target.value)}
-                required
+                readOnly
+                disabled
               />
             </div>
           )}
