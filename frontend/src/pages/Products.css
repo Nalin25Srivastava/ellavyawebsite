@@ -59,7 +59,7 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
@@ -98,5 +98,20 @@
   .products-container {
     grid-template-columns: 1fr;
     padding: 1rem;
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .products-header h1 {
+    font-size: 1.8rem;
+  }
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+  .products-main {
+    padding-right: 0;
   }
 }

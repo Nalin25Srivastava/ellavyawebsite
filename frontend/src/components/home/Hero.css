@@ -154,3 +154,22 @@
     display: none;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .hero-section {
+    padding-top: 100px;
+  }
+  .hero-cta {
+    flex-direction: column;
+    width: 100%;
+  }
+  .cta-button {
+    justify-content: center;
+  }
+}

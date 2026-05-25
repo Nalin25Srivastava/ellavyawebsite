@@ -148,3 +148,12 @@
   color: #b5838d;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
+
+@media screen and (max-width: 480px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+  .auth-title {
+    font-size: 1.5rem;
+  }
+}

@@ -146,7 +146,13 @@
 }
 
 @media screen and (max-width: 480px) {
+  .contact-wrapper {
+    padding: 1.5rem;
+  }
   .contact-heading {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  .info-item h3 {
+    font-size: 1.1rem;
   }
 }

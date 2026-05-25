@@ -36,7 +36,7 @@
 
 .combos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;
 }
 
@@ -166,5 +166,17 @@
 @media screen and (max-width: 768px) {
   .section-title {
     font-size: 2rem;
+  }
+  .combos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .section-padding {
+    padding: 4rem 5%;
+  }
+  .combo-image-wrapper {
+    height: 280px;
   }
 }
