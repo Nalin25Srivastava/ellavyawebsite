@@ -1,23 +1,38 @@
 import nodemailer from 'nodemailer';
 
 const sendEmail = async (options) => {
-  // Create a test account dynamically for Ethereal Email
-  const testAccount = await nodemailer.createTestAccount();
+  let transporter;
 
-  // Create a transporter object using Ethereal's SMTP
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
-    },
-  });
+  // Use real SMTP if provided in .env
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+      port: process.env.EMAIL_PORT || 587,
+      secure: process.env.EMAIL_PORT == 465, // true for port 465, false for 587
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+  } else {
+    // Fallback to Ethereal Testing Account if .env is not set up
+    const testAccount = await nodemailer.createTestAccount();
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false, 
+      auth: {
+        user: testAccount.user, 
+        pass: testAccount.pass, 
+      },
+    });
+  }
+
+  const fromEmail = process.env.EMAIL_USER || 'noreply@ellavya.com';
 
   // Define email options
   const mailOptions = {
-    from: '"Ellavya Admin Auth" <noreply@ellavya.com>',
+    from: `"Ellavya Admin Auth" <${fromEmail}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,
@@ -27,8 +42,12 @@ const sendEmail = async (options) => {
   // Send the email
   const info = await transporter.sendMail(mailOptions);
   
-  console.log('Message sent: %s', info.messageId);
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  if (process.env.EMAIL_USER) {
+    console.log('Real Email sent successfully: %s', info.messageId);
+  } else {
+    console.log('Test Email sent: %s', info.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  }
 };
 
 export default sendEmail;
