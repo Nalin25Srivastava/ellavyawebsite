@@ -59,13 +59,13 @@ const Products = () => {
   }, [API_URL]);
 
   /**
-   * Toggles a category filter on or off.
+   * Toggles a category filter on or off. Single-select behavior.
    */
   const toggleCategory = (categoryId) => {
     setSelectedCategories(prev => 
-      prev.includes(categoryId) 
-        ? prev.filter(id => id !== categoryId) 
-        : [...prev, categoryId]
+      prev.length === 1 && prev[0] === categoryId 
+        ? [] // Deselect if clicking the already active category
+        : [categoryId] // Replace selection with the new category
     );
   };
 
