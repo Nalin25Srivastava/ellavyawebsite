@@ -150,10 +150,45 @@
 }
 
 @media screen and (max-width: 480px) {
-  .auth-card {
-    padding: 2rem 1.5rem;
+  .auth-container {
+    background: white;
+    padding: 0;
+    min-height: 100vh;
+    align-items: flex-start;
   }
+
+  .auth-card {
+    padding: 3rem 1.5rem 2rem 1.5rem;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
   .auth-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    text-align: left;
+  }
+
+  .auth-subtitle {
+    text-align: left;
+  }
+
+  .form-group input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    border-radius: 0;
+    padding: 0.8rem 0;
+  }
+
+  .form-group input:focus {
+    box-shadow: none;
+    border-bottom-color: #b5838d;
+  }
+
+  .auth-btn {
+    margin-top: 2rem;
+    border-radius: 50px;
+    padding: 1.2rem;
   }
 }

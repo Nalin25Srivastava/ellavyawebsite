@@ -146,13 +146,37 @@
 }
 
 @media screen and (max-width: 480px) {
+  .contact-container {
+    padding-top: 20px;
+    background: white;
+    align-items: flex-start;
+  }
   .contact-wrapper {
-    padding: 1.5rem;
+    padding: 1rem;
+    box-shadow: none;
+    border-radius: 0;
+    gap: 2rem;
   }
   .contact-heading {
     font-size: 1.8rem;
   }
   .info-item h3 {
     font-size: 1.1rem;
+  }
+  .form-group input, 
+  .form-group textarea {
+    padding: 0.8rem;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid #e1e1e1;
+  }
+  .form-group input:focus, 
+  .form-group textarea:focus {
+    box-shadow: none;
+    border-bottom-color: #aa3bff;
+  }
+  .submit-button {
+    border-radius: 50px;
   }
 }
