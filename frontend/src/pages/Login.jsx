@@ -18,9 +18,11 @@ const Login = () => {
     setError('');
     setLoading(true);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
     try {
       if (step === 1) {
-        const res = await fetch('http://localhost:5000/api/auth/login', {
+        const res = await fetch(`${API_URL}/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ const Login = () => {
           navigate('/');
         }
       } else if (step === 2) {
-        const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        const res = await fetch(`${API_URL}/auth/verify-otp`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
