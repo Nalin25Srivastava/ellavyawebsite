@@ -167,16 +167,60 @@
   .section-title {
     font-size: 2rem;
   }
-  .combos-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media screen and (max-width: 480px) {
   .section-padding {
-    padding: 4rem 5%;
+    padding: 3rem 0 3rem 1rem;
   }
+  
+  .section-header {
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .combos-grid {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .combos-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .combo-card {
+    min-width: 260px;
+    scroll-snap-align: start;
+    border-radius: 16px;
+  }
+
   .combo-image-wrapper {
-    height: 280px;
+    height: 200px;
+  }
+  
+  .combo-info {
+    padding: 1rem;
+  }
+  
+  .combo-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .combo-price {
+    font-size: 1.2rem;
   }
 }

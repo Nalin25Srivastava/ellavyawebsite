@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 /* Component Imports */
 import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Products from './pages/Products';
@@ -25,6 +26,9 @@ function App() {
     <Router>
       {/* Universal Navigation Header */}
       <Navbar />
+      
+      {/* Mobile Bottom Navigation */}
+      <BottomNav />
 
       {/* Main Page Routing Logic */}
       <Routes>

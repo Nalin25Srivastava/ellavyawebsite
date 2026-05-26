@@ -10,6 +10,12 @@ body {
   color: #333;
 }
 
+@media screen and (max-width: 960px) {
+  body {
+    padding-bottom: 65px; /* Space for BottomNav */
+  }
+}
+
 .content {
   /* Add top padding to account for fixed navbar height (80px) */
   padding-top: 120px;
