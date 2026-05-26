@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 import './ProductCard.css';
 
 /**
@@ -105,10 +106,9 @@ const ProductCardImage = ({ product, isHovered, categoryIcon, className = "" }) 
  * Includes an image carousel on hover and basic product info.
  */
 const ProductCard = ({ product, categories, onClick }) => {
-  /* State to track local hover for the carousel trigger */
   const [isCardHovered, setIsCardHovered] = useState(false);
+  const { addToCart } = useCart();
   
-  /* Look up the full category object to get the icon and name */
   const category = categories.find(c => c.id === product.category);
   
   return (
@@ -118,27 +118,25 @@ const ProductCard = ({ product, categories, onClick }) => {
       onMouseLeave={() => setIsCardHovered(false)}
       onClick={() => onClick(product)}
     >
-      {/* Product Image Section with Carousel Logic */}
       <ProductCardImage 
         product={product} 
         isHovered={isCardHovered} 
         categoryIcon={category?.icon} 
       />
 
-      {/* Product Text Details */}
       <div className="product-info">
         <span className="product-category">
           {category?.name}
         </span>
         <h3 className="product-name">{product.name}</h3>
         
-        {/* Footer with price and action button */}
         <div className="product-footer">
           <span className="product-price">{product.price}</span>
           <button className="add-to-cart" onClick={(e) => {
-            e.stopPropagation(); // Don't trigger the card's main click twice
-            onClick(product);
-          }}>Details</button>
+            e.stopPropagation(); 
+            addToCart(product);
+            alert(`Added ${product.name} to cart!`);
+          }}>Add to Cart</button>
         </div>
       </div>
     </div>

@@ -24,6 +24,24 @@
 
 .bottom-nav-icon {
   margin-bottom: 4px;
+  position: relative;
+}
+
+.bottom-nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: #aa3bff;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
 }
 
 .bottom-nav-label {

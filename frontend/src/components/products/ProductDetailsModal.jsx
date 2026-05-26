@@ -1,6 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { ProductCardImage } from './ProductCard';
+import { useCart } from '../../context/CartContext';
 import './ProductDetailsModal.css';
 
 /**
@@ -10,11 +11,19 @@ import './ProductDetailsModal.css';
  * Triggered when a user clicks a product card for more details.
  */
 const ProductDetailsModal = ({ product, isOpen, onClose, categories }) => {
+  const { addToCart } = useCart();
+  
   /* Guard clause: Don't render anything if the modal isn't open or no product is selected */
   if (!isOpen || !product) return null;
 
   /* Look up the full category object for the current product */
   const category = categories.find(c => c.id === product.category);
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    alert(`Added ${product.name} to cart!`);
+    onClose(); // Optional: close modal after adding
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -102,8 +111,12 @@ const ProductDetailsModal = ({ product, isOpen, onClose, categories }) => {
 
             {/* Action Buttons: Footer of the info section */}
             <div className="modal-footer-btns">
-              <button className="buy-now-btn">Buy Now</button>
-              <button className="add-to-cart-btn">Add to Cart</button>
+              <button className="buy-now-btn" onClick={() => {
+                addToCart(product);
+                // In future, redirect to checkout
+                alert(`Proceeding to checkout with ${product.name}`);
+              }}>Buy Now</button>
+              <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 /**
@@ -10,6 +11,7 @@ import './Navbar.css';
  * logo, and authentication links.
  */
 const Navbar = () => {
+  const { cartQuantity } = useCart();
   /* State to manage whether the mobile menu (mobile overlay) is open or closed */
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -53,7 +55,7 @@ const Navbar = () => {
             <Link to="/cart" className="nav-links cart-link" onClick={closeMobileMenu}>
               <div className="cart-icon-wrapper">
                 <ShoppingCart size={24} />
-                <span className="cart-badge">0</span>
+                <span className="cart-badge">{cartQuantity}</span>
               </div>
               <span className="cart-text">Cart</span>
             </Link>

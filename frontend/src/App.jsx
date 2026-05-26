@@ -10,6 +10,7 @@ import Products from './pages/Products';
 import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Cart from './pages/Cart';
 
 
 /* Global Styles */
@@ -41,8 +42,10 @@ function App() {
         {/* Product Catalog/Store Page */}
         <Route path="/products" element={<Products />} />
 
-        {/* Temporary placeholders for Cart and About - redirecting to Home for now */}
-        <Route path="/cart" element={<Home />} />
+        {/* Cart Page */}
+        <Route path="/cart" element={<Cart />} />
+        
+        {/* About Page */}
         <Route path="/about" element={<About />} />
 
         {/* Auth Pages */}
