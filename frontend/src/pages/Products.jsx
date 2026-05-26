@@ -23,7 +23,7 @@ const Products = () => {
   const [error, setError] = useState(null);
 
   /* Get API URL from environment variables */
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
 
   /**
    * Fetch categories and products from the backend on mount
