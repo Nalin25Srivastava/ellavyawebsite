@@ -48,7 +48,7 @@ const CategorySidebar = ({ categories, selectedCategories, onToggleCategory, onC
       {/* Conditional 'Clear' button shown only when one or more filters are active */}
       {selectedCategories.length > 0 && (
         <button className="clear-filter-btn" onClick={onClearFilters}>
-          <X size={16} /> Hide Filters
+          <X size={16} /> Clear Filters
         </button>
       )}
     </aside>
