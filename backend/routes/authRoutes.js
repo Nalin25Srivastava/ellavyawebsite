@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import Customer from '../models/Customer.js';
 import Admin from '../models/Admin.js';
+import Otp from '../models/Otp.js';
 import sendEmail from '../utils/sendEmail.js';
 
 const router = express.Router();
@@ -13,11 +14,35 @@ const generateToken = (id) => {
   });
 };
 
+// @route   POST /api/auth/send-otp
+// @desc    Send OTP to email
+// @access  Public
+router.post('/send-otp', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    await Otp.create({ email, otp });
+    
+    const message = `Your Verification OTP is: ${otp}. It is valid for 5 minutes.`;
+    await sendEmail({
+      email,
+      subject: 'Ellavya - Verification OTP',
+      message,
+    });
+    
+    res.json({ message: 'OTP sent successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error sending OTP email' });
+  }
+});
+
 // @route   POST /api/auth/register
 // @desc    Register a new user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password, role, adminToken } = req.body;
+  const { name, email, password, role, adminToken, otp } = req.body;
 
   try {
     let Model;
@@ -35,6 +60,15 @@ router.post('/register', async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
+
+    // Verify OTP
+    const validOtp = await Otp.findOne({ email, otp });
+    if (!validOtp) {
+      return res.status(401).json({ message: 'Invalid or expired OTP' });
+    }
+
+    // Clear OTP
+    await Otp.deleteMany({ email });
 
     const user = await Model.create({
       name,
@@ -79,50 +113,28 @@ router.post('/login', async (req, res) => {
     const user = await Model.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // If admin, initiate OTP flow instead of immediately returning token
-      if (role === 'admin') {
-        // Generate a 6-digit OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      // Initiate OTP flow for everyone
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      await Otp.create({ email: user.email, otp });
+      
+      const message = `Your Login OTP is: ${otp}. It is valid for 5 minutes.`;
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: 'Ellavya - Login OTP',
+          message,
+        });
         
-        // Set expiry to 10 minutes from now
-        const otpExpiry = new Date();
-        otpExpiry.setMinutes(otpExpiry.getMinutes() + 10);
-        
-        user.otp = otp;
-        user.otpExpiry = otpExpiry;
-        await user.save();
-        
-        // Send email
-        const message = `Your Admin Login OTP is: ${otp}. It is valid for 10 minutes.`;
-        try {
-          await sendEmail({
-            email: user.email,
-            subject: 'Ellavya Admin Auth - Login OTP',
-            message,
-          });
-          
-          return res.json({
-            requiresOtp: true,
-            email: user.email,
-            message: 'OTP sent to your email.'
-          });
-        } catch (error) {
-          console.error(error);
-          user.otp = undefined;
-          user.otpExpiry = undefined;
-          await user.save();
-          return res.status(500).json({ message: 'Error sending OTP email' });
-        }
+        return res.json({
+          requiresOtp: true,
+          email: user.email,
+          message: 'OTP sent to your email.'
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error sending OTP email' });
       }
-
-      // Normal customer login
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: role || 'customer',
-        token: generateToken(user._id),
-      });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -132,33 +144,34 @@ router.post('/login', async (req, res) => {
 });
 
 // @route   POST /api/auth/verify-otp
-// @desc    Verify OTP for Admin login
+// @desc    Verify OTP for Login
 // @access  Public
 router.post('/verify-otp', async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp, role } = req.body;
 
   try {
-    const user = await Admin.findOne({ email });
+    const validOtp = await Otp.findOne({ email, otp });
 
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid user' });
-    }
-
-    if (user.otp !== otp || user.otpExpiry < new Date()) {
+    if (!validOtp) {
       return res.status(401).json({ message: 'Invalid or expired OTP' });
     }
 
     // OTP is valid, clear it
-    user.otp = undefined;
-    user.otpExpiry = undefined;
-    await user.save();
+    await Otp.deleteMany({ email });
+
+    let Model = role === 'admin' ? Admin : Customer;
+    const user = await Model.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid user' });
+    }
 
     // Issue JWT
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      role: 'admin',
+      role: role || 'customer',
       token: generateToken(user._id),
     });
   } catch (error) {
