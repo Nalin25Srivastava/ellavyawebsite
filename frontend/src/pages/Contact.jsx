@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Send } from 'lucide-react';
+import { Mail, Phone, Send, MapPin } from 'lucide-react';
 import './Contact.css';
 
 const Contact = () => {
@@ -42,6 +42,13 @@ const Contact = () => {
               <div>
                 <h3>Phone</h3>
                 <p>9829185463, 9950962509</p>
+              </div>
+            </div>
+            <div className="info-item">
+              <MapPin className="info-icon" />
+              <div>
+                <h3>Address</h3>
+                <p>H.No 100 New Gopal Vihar Baran Road Kota Rajasthan (324001)</p>
               </div>
             </div>
           </div>
