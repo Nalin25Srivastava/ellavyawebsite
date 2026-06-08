@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './Navbar.css';
@@ -12,8 +12,26 @@ import './Navbar.css';
  */
 const Navbar = () => {
   const { cartQuantity } = useCart();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
   /* State to manage whether the mobile menu (mobile overlay) is open or closed */
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  React.useEffect(() => {
+    const data = localStorage.getItem('userInfo');
+    if (data) {
+      setUserInfo(JSON.parse(data));
+    } else {
+      setUserInfo(null);
+    }
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    setUserInfo(null);
+    navigate('/');
+  };
 
   /* Function to toggle the mobile menu state (open/closed) */
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -64,16 +82,28 @@ const Navbar = () => {
           {/* Mobile-Only Authentication Buttons (rendered inside the menu on mobile) */}
           <li className="nav-item-mobileOnly">
             <div className="navbar-auth-mobile">
-              <Link to="/login" className="btn-login" onClick={closeMobileMenu}>Log In</Link>
-              <Link to="/signup" className="btn-signup" onClick={closeMobileMenu}>Sign Up</Link>
+              {userInfo ? (
+                <button className="btn-logout" onClick={() => { handleLogout(); closeMobileMenu(); }} style={{ background: '#aa3bff', color: 'white', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, width: '100%' }}>Logout ({userInfo.name})</button>
+              ) : (
+                <>
+                  <Link to="/login" className="btn-login" onClick={closeMobileMenu}>Log In</Link>
+                  <Link to="/signup" className="btn-signup" onClick={closeMobileMenu}>Sign Up</Link>
+                </>
+              )}
             </div>
           </li>
         </ul>
 
         {/* Desktop-Only Authentication Buttons */}
         <div className="navbar-auth">
-          <Link to="/login" className="btn-login">Log In</Link>
-          <Link to="/signup" className="btn-signup">Sign Up</Link>
+          {userInfo ? (
+            <button className="btn-logout" onClick={handleLogout} style={{ background: '#aa3bff', color: 'white', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>Logout ({userInfo.name})</button>
+          ) : (
+            <>
+              <Link to="/login" className="btn-login">Log In</Link>
+              <Link to="/signup" className="btn-signup">Sign Up</Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

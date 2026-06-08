@@ -13,6 +13,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    if (localStorage.getItem('userInfo')) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     setError('');
