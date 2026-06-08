@@ -16,8 +16,32 @@ const CategorySidebar = ({ categories, selectedCategories, onToggleCategory, onC
         <ListFilter className="filter-icon" />
         <h2>Categories</h2>
       </div>
+
+      {/* Mobile Category Select */}
+      <div className="mobile-category-select">
+        <select 
+          value={selectedCategories.length > 0 ? selectedCategories[0] : ''} 
+          onChange={(e) => {
+            if (e.target.value === '') {
+              onClearFilters();
+            } else {
+              // Since it's a single select and onChange only fires on value change,
+              // toggleCategory will effectively act as a 'set' here.
+              // Wait, if it's already selected it would toggle off, but onChange prevents that.
+              // However, since toggleCategory looks at prev state, we need to ensure it works.
+              // If the select value changes, it means the new value is definitely not the currently selected one.
+              onToggleCategory(e.target.value);
+            }
+          }}
+        >
+          <option value="">All Products</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
+          ))}
+        </select>
+      </div>
       
-      {/* List of Filtes (Buttons) */}
+      {/* List of Filters (Buttons) */}
       <div className="category-list">
         {/* 'All Products' Button - Active when no specific categories are selected */}
         <button 
