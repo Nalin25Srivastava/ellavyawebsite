@@ -40,6 +40,7 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password,
+      plainPassword: password,
     });
 
     if (user) {
