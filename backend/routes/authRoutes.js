@@ -42,7 +42,7 @@ router.post('/send-otp', async (req, res) => {
 // @desc    Register a new user
 // @access  Public
 router.post('/register', async (req, res) => {
-  const { name, email, password, role, adminToken, otp } = req.body;
+  const { name, email, password, role, adminToken } = req.body;
 
   try {
     let Model;
@@ -61,14 +61,6 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Verify OTP
-    const validOtp = await Otp.findOne({ email, otp });
-    if (!validOtp) {
-      return res.status(401).json({ message: 'Invalid or expired OTP' });
-    }
-
-    // Clear OTP
-    await Otp.deleteMany({ email });
 
     const user = await Model.create({
       name,
@@ -113,28 +105,14 @@ router.post('/login', async (req, res) => {
     const user = await Model.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // Initiate OTP flow for everyone
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      await Otp.create({ email: user.email, otp });
-      
-      const message = `Your Login OTP is: ${otp}. It is valid for 5 minutes.`;
-      try {
-        await sendEmail({
-          email: user.email,
-          subject: 'Ellavya - Login OTP',
-          message,
-        });
-        
-        return res.json({
-          requiresOtp: true,
-          email: user.email,
-          message: 'OTP sent to your email.'
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error sending OTP email' });
-      }
+      // Direct login for everyone
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: role || 'customer',
+        token: generateToken(user._id),
+      });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
     }
